@@ -55,6 +55,7 @@ workspace("VkChess")
 		"MultiProcessorCompile",
 	})
 
+include("VkChess/Core")
 include("VkChess/Graphics")
 include("VkChess/Chess")
 include("VkChess/Game")

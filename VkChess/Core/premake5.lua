@@ -1,7 +1,7 @@
 MacOSVersion = MacOSVersion or "14.5"
 
-project("Game")
-	kind("ConsoleApp")
+project("Core")
+	kind("StaticLib")
 	language("C++")
 	cppdialect("C++23")
 	staticruntime("On")
@@ -15,6 +15,10 @@ project("Game")
 	targetdir("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
+	-- Note: VS2022/Make only need the pchheader filename
+	pchheader("copch.h")
+	pchsource("src/VkChess/copch.cpp")
+
 	--------------------------------------
 	-- Files & Options
 	--------------------------------------
@@ -27,10 +31,6 @@ project("Game")
 	includedirs({
 		"src",
 		"src/VkChess",
-
-		"%{wks.location}/VkChess/Core/src",
-		"%{wks.location}/VkChess/Graphics/src",
-		"%{wks.location}/VkChess/Chess/src",
 	})
 
 	defines({
@@ -38,11 +38,7 @@ project("Game")
 		"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
 	})
 
-	links({
-		"Core",
-		"Graphics",
-		"Chess",
-	})
+	links({})
 
 	--------------------------------------
 	-- Platforms
@@ -60,6 +56,9 @@ project("Game")
 		systemversion(MacOSVersion)
 
 	filter("action:xcode*")
+		-- Note: XCode needs the full pch header path
+		pchheader("src/VkChess/copch.h")
+
 		-- Note: If we don't add the header files to the externalincludedirs
 		-- we can't use <angled> brackets to include files.
 		externalincludedirs({
@@ -76,7 +75,6 @@ project("Game")
 		symbols("on")
 
 	filter("configurations:Release")
-		kind("WindowedApp")
 		defines("VC_CONFIG_RELEASE")
 		runtime("Release")
 		optimize("on")

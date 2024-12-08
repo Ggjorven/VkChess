@@ -31,6 +31,8 @@ project("Graphics")
 	includedirs({
 		"src",
 		"src/VkChess",
+
+		"%{wks.location}/VkChess/Core/src",
 	})
 
 	defines({
@@ -38,7 +40,9 @@ project("Graphics")
 		"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
 	})
 
-	links({})
+	links({
+		"Core",
+	})
 
 	--------------------------------------
 	-- Platforms
